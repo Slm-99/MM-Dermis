@@ -1,0 +1,12 @@
+.vscode/
+__pycache__/
+*.pyc
+
+# Generated reports and processed tables
+# classification_clean_*.xlsx
+# classification_processed_*.xlsx
+# image_check_report.txt
+# missing_images.csv
+
+# Generated figures
+# results/

@@ -88,6 +88,46 @@
 
 ---
 
+## 4. `4-LabelRules.py`：手工指定的分类规则与 OOD 定义
+
+- **主要功能**
+  - 定义前 10 个主要类别（In-distribution, ID），每类包含：
+    - 中文名称；
+    - 英文全称；
+    - 英文简称（短标签）。
+  - 定义一个统一的 OOD（Out-of-distribution）类别：
+    - 标签索引统一为 `10`；
+    - 所有指定的 OOD 诊断都映射到该标签。
+  - 提供便捷映射：
+    - `MAIN_LABELS`：前 10 个主类的详细定义；
+    - `OOD_LABEL`：统一的 OOD 标签定义；
+    - `OOD_DIAGNOSES`：映射到 OOD 的具体诊断列表；
+    - `ALL_LABELS`：主类 + OOD 的完整标签列表；
+    - `ZH_TO_INDEX`：中文诊断名 → 整数标签；
+    - `INDEX_TO_ZH`：整数标签 → 中文名（主类 + OOD）。
+
+- **前 10 个主类（ID）示意**
+  - `0`：湿疹 — *Eczema*（`ECZ`）
+  - `1`：银屑病 — *Psoriasis*（`PSO`）
+  - `2`：白癜风 — *Vitiligo*（`VIT`）
+  - `3`：特应性皮炎 — *Atopic dermatitis*（`AD`）
+  - `4`：掌跖脓疱病 — *Palmoplantar pustulosis*（`PPP`）
+  - `5`：大疱性类天疱疮 — *Bullous pemphigoid*（`BP`）
+  - `6`：扁平苔藓 — *Lichen planus*（`LP`）
+  - `7`：荨麻疹 — *Urticaria*（`URT`）
+  - `8`：药物性皮炎 — *Drug eruption*（`DE`）
+  - `9`：痤疮 — *Acne*（`ACN`）
+
+- **OOD 诊断集合**
+  - 统一映射到标签索引 `10`（OOD），包括：
+    - 过敏性紫癜 — *Allergic purpura*（`AP`）
+    - 玫瑰糠疹 — *Pityriasis rosea*（`PR`）
+    - 结节性痒疹 — *Prurigo nodularis*（`PN`）
+    - 血管炎 — *Vasculitis*（`VASC`）
+    - 丘疹性荨麻疹 — *Papular urticaria*（`PU`）
+
+---
+
 ## 推荐使用流程
 
 1. 运行 `1-DataProcess.py`  
@@ -96,6 +136,8 @@
    - 对当前索引进行图片完整性检查，确认哪些样本存在缺失或目录问题。
 3. 运行 `3-IndexCleanAndStats.py`  
    - 在保证四模态图片全部存在的前提下，生成干净索引，并输出类别分布统计及可视化图像。
+4. 结合 `4-LabelRules.py`  
+   - 在后续建模阶段，将清洗后的索引（`classification_clean_*.xlsx`）中的 `diagnosis` 字段，通过 `ZH_TO_INDEX` 等映射转换为最终训练使用的标签体系（10 个 ID 类 + 1 个 OOD 类）。
 
 通过以上步骤，可以构建一个**多模态均完整且标注规范**的 MM-Dermis 子集，用于后续建模与分析。 
 
